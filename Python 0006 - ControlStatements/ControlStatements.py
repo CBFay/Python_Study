@@ -33,7 +33,7 @@ print(words)
 print()
 
 # 4.3 THE 'range()' FUNCTION
-# If you do need to iterate over a sequence of numbers, the build in function...
+# If you do need to iterate over a sequence of numbers, the built in function...
 # ...range() comes in handy. It generates arithmetic progression
 for i in range(5):
     print(i)
