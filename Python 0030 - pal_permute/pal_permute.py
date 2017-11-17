@@ -9,10 +9,9 @@ def pal_permute(str):
 	list = [0] * 128 # stores character frequency
 	
 	for x in str:
+        list [char_num(x)] += 1 
 		if x == ' ': # consider spaces
 			letters -= 1
-		else:
-			list [char_num(x)] += 1 
 
 	if letters % 2 != 0:
 		odd = 1 
@@ -26,5 +25,4 @@ def pal_permute(str):
 	return True
 	
 def char_num(character):
-	return ord(character.lower()) # consider uppercase
-	
+return ord(character.lower()) # consider uppercase
