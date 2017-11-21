@@ -14,7 +14,8 @@ def string_compress2(subject):
         
         if i + 1 == len(subject) or subject[i] != subject[i+1]:
             compressed.append(subject[i])
-            compressed.append(str(consecutive))
+            if consecutive > 1:
+                compressed.append(str(consecutive))
             consecutive = 0
     
     return ''.join(compressed)
