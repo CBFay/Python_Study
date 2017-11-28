@@ -14,7 +14,7 @@ class linked_list:
 		self.root = None # this will change every time we add a new node.
 		
 	
-	def add_node(self, data):
+	def add(self, data):
 		new_node = node() # create a new node
 		new_node.data = data
 		
@@ -22,7 +22,7 @@ class linked_list:
 		self.root = new_node # set the current node to the new one.
 		
 	def list_print(self):
-		node = self.cur_node # can't point to ll!!
+		node = self.root 
 		while node:
 			print (node.data)
 			node = node.next
