@@ -19,7 +19,7 @@ class linked_list:
 		new_node.data = data
 		
 		new_node.next = self.root # link the new node to the 'previous' node.
-		self.root = new_node # set the current node to the new one.
+		self.root = new_node # set the root node to the one we just added
 		
 	def list_print(self):
 		node = self.root 
