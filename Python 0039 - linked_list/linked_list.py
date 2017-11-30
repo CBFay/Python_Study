@@ -1,6 +1,7 @@
 # linked_list.py
-# Implementation of a Linked List
+# Growing implementation of a Linked List
 # Created on 11.27.2017 by CB Fay
+# Updated on 11.29.2017 by CB Fay
 
 class node:
 	def __init__(self, data, next = None):
@@ -21,7 +22,7 @@ class linked_list:
 		list_string = '['
 		node = self.root
 		while node:
-			list_string += str(node.data)
+			list_string += repr(node.data)
 			node = node.next
 			if node:
 				list_string += ', '
@@ -32,7 +33,8 @@ class linked_list:
 		new_node = node(data, self.root) # create a new node
 		self.root = new_node # set the root node to the one we just added
 		self.size += 1
-		
+	
+	# is buggy
 	def remove(self, deleteme):
 		node = self.root
 		if node.data == deleteme:
@@ -44,9 +46,26 @@ class linked_list:
 				if node.data == deleteme:
 					previous.next = node.next
 					self.size -= 1
-		
-	def size(self):
-		return self.size
+	
+	def remove_duplicates(self): # O(n)
+		if self.size < 2:
+			return
+		inlist = set()
+		node = self.root
+		if self.size > 1:
+			prev = self.root
+			node = node.next
+			inlist.add(prev.data)
+			while node.next:
+				if node.data in inlist:
+					prev.next = node.next
+					node = node.next
+				else:
+					inlist.add(node.data)
+					node = node.next
+					prev = prev.next
+			if node.data in inlist: # if the tail is a duplicate, delete it
+				prev.next = None
 		
 	def list_print(self):
 		node = self.root 
