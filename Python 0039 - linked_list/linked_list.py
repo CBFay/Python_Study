@@ -1,9 +1,10 @@
 # linked_list.py
-# Growing implementation of a Linked List
+# Ongoing implementation of a Singly Linked List
 # Created on 11.27.2017 by CB Fay
 # Updated on 11.30.2017
 
 class node:
+	"""Node object used to implement Linked Lists"""
 	def __init__(self, data, next = None):
 		self.data = data
 		self.next = next
@@ -11,12 +12,15 @@ class node:
 		return str(self.data)
 		
 class linked_list:
+	"""Singly Linked List object"""
+	
 	def __init__(self):
+		"""Create a linked_list object given no parameters."""
 		self.root = None # this will change every time we add a new node.
 		self.size = 0
 	
-	# creates a linked_list from a sequential data type
 	def __init__(self, sequence): # O(k)
+		"""Create a linked_list object given a iterable object."""
 		self.root = None
 		self.size = 0
 		for i in range(1, len(sequence)+1, 1):
@@ -24,9 +28,15 @@ class linked_list:
 			
 		
 	def __len__(self):
+		"""Implement the built-in function len().
+		Return the number of list elements
+		"""
 		return self.size
 		
 	def __str__(self):
+		"""Implement the built-in function str().
+		Return the informal string representation of self.
+		"""
 		list_string = '['
 		node = self.root
 		while node:
@@ -38,6 +48,7 @@ class linked_list:
 		return list_string
 		
 	def __getitem__(self, index):
+		"""Implement evaluation of self[key]"""
 		if index < 0:
 			distance = self.size + index
 		else:
@@ -47,8 +58,9 @@ class linked_list:
 			node = node.next
 		return node.data
 		
-	def add(self, data):
-		new_node = node(data, self.root) # create a new node
+	def add(self, value):
+		"""Insert a node with a given value at the head of the list"""
+		new_node = node(value, self.root) # create a new node
 		self.root = new_node # set the root node to the one we just added
 		self.size += 1
 		
@@ -58,6 +70,7 @@ class linked_list:
 	
 	# is buggy
 	def remove(self, deleteme):
+		"""Remove all instances of a given value from the list"""
 		node = self.root
 		if node.data == deleteme:
 			self.root = self.root.next
@@ -70,6 +83,7 @@ class linked_list:
 					self.size -= 1
 	
 	def remove_duplicates(self): # O(n)
+		"""Use a hashset to remove duplicate elements"""
 		if self.size < 2:
 			return
 		inlist = set()
@@ -83,19 +97,16 @@ class linked_list:
 					inlist.add(node.data)
 					prev = node
 				node = node.next
-
-	
-	def from_last(self, k):
-		if k < 1 or k > self.size:
-			return None
-		distance = self.size - k
-		n = self.root
-		for i in range(distance):
-			n = n.next
-		return n.data
-			
-	def list_print(self):
-		node = self.root 
-		while node:
-			print (node.data)
-			node = node.next
+				
+	def kth_from_last(self, k):
+		"""Return the node k elements from the tail of the list.
+		This is useful if self.size doesn't exist.
+		"""
+		a = self.root
+		b = self.root
+		for i in range(k):
+			b = b.next
+		while b:
+			a = a.next
+			b = b.next
+		return a
