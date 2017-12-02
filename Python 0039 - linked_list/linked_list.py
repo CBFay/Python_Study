@@ -1,7 +1,7 @@
 # linked_list.py
 # Ongoing implementation of a Singly Linked List
 # Created on 11.27.2017 by CB Fay
-# Updated on 11.30.2017
+# Updated on 12.02.2017
 
 class node:
 	"""Node object used to implement Linked Lists"""
@@ -10,6 +10,13 @@ class node:
 		self.next = next
 	def __str__(self):
 		return str(self.data)
+
+	def remove(self):
+		if self.next:
+			self.data = self.next.data
+			self.next = self.next.next
+			return True
+		return False
 		
 class linked_list:
 	"""Singly Linked List object"""
@@ -56,7 +63,7 @@ class linked_list:
 		node = self.root
 		for i in range(distance):
 			node = node.next
-		return node.data
+		return node
 		
 	def add(self, value):
 		"""Insert a node with a given value at the head of the list"""
