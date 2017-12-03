@@ -1,4 +1,3 @@
-
 # hexidecimal_operations.py
 # Useful base manipulations on numeric strings
 # Created on 12.03.2017 by CB Fay
