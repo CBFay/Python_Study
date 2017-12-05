@@ -3,9 +3,10 @@
 
 import pyglet
 
-class GameWindow(pyglet.window.Window):
+# classes can take objects as parameters to inherit from them
+class GameWindow(pyglet.window.Window): 
 	def __init__(self, *args, **kwargs):
-		super().__init__(*args, **kwargs)
+		super().__init__(*args, **kwargs) # necessary to initialize subclasses?
 		self.set_location(400, 200)
 		self.frame_rate= 1/60.0
 		
