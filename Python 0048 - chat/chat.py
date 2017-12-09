@@ -1,5 +1,5 @@
 # https://www.youtube.com/watch?v=DIPZoZheMTo
-# simple server
+# simple server that sends back whatever we send to it
 
 import socket
 import threading
