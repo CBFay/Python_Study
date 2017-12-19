@@ -9,7 +9,8 @@ class Server:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connections = []
     def __init__(self):
-        print(socket.gethostbyname(socket.gethostname()))
+        myaddress = socket.gethostbyname(socket.gethostname())
+        print('My IPv4 address:', myaddress)
         self.sock.bind(('0.0.0.0', 10000))
         self.sock.listen(1)
         
@@ -19,6 +20,9 @@ class Server:
             for connection in self.connections:
                 connection.send(data)
             if not data:
+                self.connections.remove(c)
+                c.close
+                print(str('{} : {} disconnected'.format(a[0], a[1])))
                 break
     
     def run(self):
@@ -28,7 +32,7 @@ class Server:
             cThread.daemon = True
             cThread.start()
             self.connections.append(c)
-            print(self.connections)
+            print(str('{} : {} connected'.format(a[0], a[1])))
 
 class Client:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -44,7 +48,7 @@ class Client:
             data = self.sock.recv(1024)
             if not data:
                 break
-            print(data)    
+            print(str(data, 'utf-8'))    
         
     def sendMsg(self):
         while True:
