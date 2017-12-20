@@ -10,23 +10,23 @@ import time
 
 class Host:
     def __init__(self):
-        self.exit = ['*Disconnected*\n']
+        self.exit = ['*Disconnected*\n', '\n*Disconnected*\n']
         self.name = input('Name? ')
         self.s = socket.socket()
-        self.host = socket.gethostbyname(socket.gethostname())
-        print('Your address:', self.host)
+        self.address = socket.gethostbyname(socket.gethostname())
+        print('Your address:', self.address)
         self.port = 10000
-        self.s.bind((self.host, self.port))
+        self.s.bind((self.address, self.port))
         print('waiting for connection...')
         self.s.listen(1)
         
         try:
-            self.conn, self.addr = self.s.accept()
+            self.conn, self.guest = self.s.accept()
         except KeyboardInterrupt:
             print('\n'+self.exit[0])
             sys.exit(0)
             
-        print(self.addr, "has connected")
+        print(self.guest, "has connected")
         self.exchange()
                 
     def talk(self):
@@ -58,17 +58,20 @@ class Host:
             listener.join()
         except KeyboardInterrupt:
                 self.conn.close()
-                print('\n' + self.exit[0])
+                print(self.exit[1])
                 sys.exit(0)
                 
 class Guest:
     def __init__(self):
         self.exit = ['*Disconnected*\n']
         self.name = input('Name? ')
+        self.address = socket.gethostbyname(socket.gethostname())
+        print('Your address:',self.address)
         self.s = socket.socket()
-        self.host = input('Host address: ')
+        self.hostaddress = input('Host address: ')
         self.port = 10000
-        self.s.connect((self.host, self.port))
+        self.s.connect((self.hostaddress, self.port))
+        print('Connected!')
         self.exchange()
 
     def talk(self):
@@ -100,7 +103,7 @@ class Guest:
             listener.join()
         except KeyboardInterrupt:
                 self.s.close()
-                print('\n' + self.exit[0])
+                print(self.exit[1])
                 sys.exit(0)
             
                 
