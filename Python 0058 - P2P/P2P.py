@@ -1,48 +1,108 @@
-# Prototype of a P2P messaging application
-# Created 12.18.2017
+# Usernames
+# Internet?
+# Combine objects
+# Refactor
 
 import socket
+import threading
 import sys
 import time
 
 class Host:
     def __init__(self):
-        s = socket.socket()
-        host = socket.gethostbyname(socket.gethostname())
-        print(host)
-        port = 10000
-        s.bind((host, port))
+        self.exit = ['*Disconnected*\n']
+        self.name = input('Name? ')
+        self.s = socket.socket()
+        self.host = socket.gethostbyname(socket.gethostname())
+        print('Your address:', self.host)
+        self.port = 10000
+        self.s.bind((self.host, self.port))
         print('waiting for connection...')
-        s.listen(1)
-        conn, addr = s.accept()
-        print(addr, "has connected")  
-
+        self.s.listen(1)
+        
+        try:
+            self.conn, self.addr = self.s.accept()
+        except KeyboardInterrupt:
+            print('\n'+self.exit[0])
+            sys.exit(0)
+            
+        print(self.addr, "has connected")
+        self.exchange()
+                
+    def talk(self):
         while True:
-            try:
-                message = input('>>> ').encode()
-                conn.send(message)
-
-                incoming = conn.recv(1024)
-                print(incoming.decode())
-            except KeyboardInterrupt:
+            outgoing = (self.name + ': ' + input()).encode()
+            self.conn.send(outgoing)
+        
+    def listen(self):
+        while True:
+            incoming = self.conn.recv(1024)
+            print(incoming.decode())
+            if not incoming:
+                self.conn.close()
+                print(self.exit[0])
+                sys.exit(0)
+                
+    
+    def exchange(self):
+        talker = threading.Thread(target=self.talk)
+        listener = threading.Thread(target=self.listen)
+        
+        talker.daemon = True
+        listener.daemon = True
+        
+        listener.start()
+        talker.start()
+            
+        try:
+            listener.join()
+        except KeyboardInterrupt:
+                self.conn.close()
+                print('\n' + self.exit[0])
                 sys.exit(0)
                 
 class Guest:
     def __init__(self):
-        s = socket.socket()
-        host = input('Hostname: ')
-        port = 10000
-        s.connect((host,port))
+        self.exit = ['*Disconnected*\n']
+        self.name = input('Name? ')
+        self.s = socket.socket()
+        self.host = input('Host address: ')
+        self.port = 10000
+        self.s.connect((self.host, self.port))
+        self.exchange()
 
+    def talk(self):
         while True:
-            try:
-                incoming = s.recv(1024)
-                print(incoming.decode())
-
-                message = input('>>> ').encode()
-                s.send(message)
-            except KeyboardInterrupt:
+            outgoing = (self.name + ': ' + input()).encode()
+            self.s.send(outgoing)
+        
+    def listen(self):
+        while True:
+            incoming = self.s.recv(1024)
+            print(incoming.decode())
+            if not incoming:
+                self.s.close()
+                print(self.exit[0])
                 sys.exit(0)
+                
+    
+    def exchange(self):
+        talker = threading.Thread(target=self.talk)
+        listener = threading.Thread(target=self.listen)
+        
+        talker.daemon = True
+        listener.daemon = True
+        
+        listener.start()
+        talker.start()
+
+        try:
+            listener.join()
+        except KeyboardInterrupt:
+                self.s.close()
+                print('\n' + self.exit[0])
+                sys.exit(0)
+            
                 
 relationship = None
 while True:
