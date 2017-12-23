@@ -1,8 +1,3 @@
-# Usernames
-# Internet?
-# Combine objects
-# Refactor
-
 import socket
 import threading
 import sys
@@ -12,16 +7,16 @@ class Host:
     def __init__(self):
         self.exit = ['*Disconnected*\n', '\n*Disconnected*\n']
         self.name = input('Name? ')
-        self.s = socket.socket()
+        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.address = socket.gethostbyname(socket.gethostname())
         print('Your address:', self.address)
         self.port = 10000
-        self.s.bind((self.address, self.port))
+        self.server.bind((self.address, self.port))
         print('waiting for connection...')
-        self.s.listen(1)
+        self.server.listen(1)
         
         try:
-            self.conn, self.guest = self.s.accept()
+            self.connection, self.guest = self.server.accept()
         except KeyboardInterrupt:
             print('\n'+self.exit[0])
             sys.exit(0)
@@ -32,14 +27,14 @@ class Host:
     def talk(self):
         while True:
             outgoing = (self.name + ': ' + input()).encode()
-            self.conn.send(outgoing)
+            self.connection.send(outgoing)
         
     def listen(self):
         while True:
-            incoming = self.conn.recv(1024)
+            incoming = self.connection.recv(1024)
             print(incoming.decode())
             if not incoming:
-                self.conn.close()
+                self.connection.close()
                 print(self.exit[0])
                 sys.exit(0)
                 
@@ -57,7 +52,7 @@ class Host:
         try:
             listener.join()
         except KeyboardInterrupt:
-                self.conn.close()
+                self.connection.close()
                 print(self.exit[1])
                 sys.exit(0)
                 
@@ -67,24 +62,24 @@ class Guest:
         self.name = input('Name? ')
         self.address = socket.gethostbyname(socket.gethostname())
         print('Your address:',self.address)
-        self.s = socket.socket()
+        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.hostaddress = input('Host address: ')
         self.port = 10000
-        self.s.connect((self.hostaddress, self.port))
+        self.server.connect((self.hostaddress, self.port))
         print('Connected!')
         self.exchange()
 
     def talk(self):
         while True:
             outgoing = (self.name + ': ' + input()).encode()
-            self.s.send(outgoing)
+            self.server.send(outgoing)
         
     def listen(self):
         while True:
-            incoming = self.s.recv(1024)
+            incoming = self.server.recv(1024)
             print(incoming.decode())
             if not incoming:
-                self.s.close()
+                self.server.close()
                 print(self.exit[0])
                 sys.exit(0)
                 
@@ -102,14 +97,14 @@ class Guest:
         try:
             listener.join()
         except KeyboardInterrupt:
-                self.s.close()
+                self.server.close()
                 print(self.exit[1])
                 sys.exit(0)
             
                 
 relationship = None
 while True:
-    relationship = input('Will you be host or guest? ')
+    relationship = input("Will you be host or guest? ")
     if relationship == 'host' or relationship == 'guest':
         break
     else:
