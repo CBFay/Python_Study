@@ -23,3 +23,4 @@ a = '{0:o}'.format(int(a,2)) # convert a binary string to octal
 # a == 377
 a = '{0:d}'.format(int(a,8)) # convert an octal string to decimal 
 # a == '255'
+a = '{0:x}'.format(int(a,10)) # convert a decimal string to hexidecimal
