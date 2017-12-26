@@ -5,30 +5,29 @@ class chess:
 
     def __init__(self):
         """Constructor"""
-        self.board = [[None for x in range(8)] for y in range(8)]
-        self.w = '#'
-        self.b = '$'
-        self.e = '.'
+        self.board = [[False for x in range(8)] for y in range(8)]
+        self.w = '#' # white
+        self.b = '$' # black
+        self.e = '.' # empty
     
     def __repr__(self):
         """Return a string representation of a chess object"""
-        grid = ''
+        display = ''
         rank = '8'
+        display += '\n'.ljust(8)
+        for file in range(65, 73):
+            display += str(chr(file)).ljust(5)
+        display += '\n\n\n'
         for y in self.board:
-            grid += rank.ljust(7)
+            display += rank.ljust(7)
             rank = str(int(rank)-1)
             for x in y:
-                if x == None:
-                    grid += self.e.ljust(5)
+                if not x:
+                    display += self.e.ljust(5)
                 else:
-                    grid += x.sym.ljust(5)
-            grid += '\n\n'
-            
-        grid += '\n'.ljust(8)
-        for file in range(65, 73):
-            grid += str(chr(file)).ljust(5)
-            
-        return grid
+                    display += x.sym.ljust(5)
+            display += '\n\n'
+        return display
     
     def deusx(self, ay, ax, by, bx, swap=False):
         """Perform an arbitrary piece movement"""
