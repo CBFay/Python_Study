@@ -1,5 +1,6 @@
 # checkIPs
 
+## Problem
 Given a list of strings, return a corresponding list of strings indicating whether each given was an IPv4, IPv6, or neither.
 
 checkIPs.py contains the initial solution that I provided in a time sensitive setting. 
