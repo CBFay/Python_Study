@@ -1,5 +1,4 @@
-# checkIPs.py
-# Determine whether strings in a list are IP addresses
+# Detect IPv4 and IPv6 addresses in a list
 # Created 12.01.2017 by CB Fay
 
 def checkIPs(ips):
