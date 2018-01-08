@@ -10,4 +10,7 @@ class sieve:
                 continue
             for multiple in range(2, n//p):
                 self.composites.add(multiple*p)
-                
+        self.primes = set([i for i in range(n) if i not in self.composites])
+        
+        
+        
