@@ -1,16 +1,23 @@
 # https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
 # The basis for an iterative method of detecting prime numbers
-# Created on 01.07.2018 by CB Fay
+# Updated on 01.12.2018 by CB Fay
 
-class sieve:
+from math import sqrt
+
+class sieve_set:
     def __init__(self, n):
         self.composites = set()
-        for p in range(2, n):
+        for p in range(2, int(sqrt(n))):
             if p in self.composites:
                 continue
-            for multiple in range(2, n//p):
+            for multiple in range(p, (n // p)+1):
                 self.composites.add(multiple*p)
-        self.primes = set([i for i in range(n) if i not in self.composites])
-        
-        
-        
+
+class sieve_list:
+    def __init__(self, n):
+        self.prime = [False, False] + [True] * (n-1)
+        for p in range(2, int(sqrt(n))):
+            if not self.prime[p]:
+                continue
+            for multiple in range(p, (n // p)+1):
+                self.prime[multiple*p] = False
